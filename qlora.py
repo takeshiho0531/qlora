@@ -800,7 +800,8 @@ def train():
         logger.info("*** Train ***")
         # Note: `resume_from_checkpoint` not supported for adapter checkpoints by HF.
         # Currently adapter checkpoint is reloaded as expected but optimizer/scheduler states are not.
-        train_result = trainer.train()
+        with torch.autocast("cuda"): 
+          train_result = trainer.train()
         metrics = train_result.metrics
         trainer.log_metrics("train", metrics)
         trainer.save_metrics("train", metrics)
